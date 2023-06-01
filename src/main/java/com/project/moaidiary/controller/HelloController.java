@@ -15,6 +15,11 @@ public class HelloController {
         return HttpStatus.OK;
     }
 
+    @GetMapping("/")
+    public String startText(){
+        return "moai diary server";
+    }
+
     @GetMapping("/hello")
     public String hello(){
         return "hello, this is moai diary";
