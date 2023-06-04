@@ -2,6 +2,7 @@ package com.project.moaidiary.entity.user;
 
 import com.project.moaidiary.moai_enum.ImageProfile;
 import com.project.moaidiary.service.user.dto.CreateUserDto;
+import com.project.moaidiary.service.user.dto.UpdateUserInfoDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,10 +23,10 @@ public class User {
     @Column(name = "user_name", nullable = false, length = 20)
     private String userName;
 
-    @Column(name = "user_display_name", nullable = false, length = 50)
+    @Column(name = "user_display_name", nullable = false, length = 50, unique = true)
     private String userDisplayName;
 
-    @Column(name = "user_email", nullable = false, length = 100)
+    @Column(name = "user_email", nullable = false, length = 100, unique = true)
     private String userEmail;
 
     @Column(name = "user_phone", length = 15)
@@ -46,5 +47,12 @@ public class User {
             .firebaseUniqueKey(createUserDto.getFirebaseUniqueKey())
             .imageProfileName(IMG_PROFILE_CHERRY) /* 하드코딩 - 이후 랜덤값으로 변경 필요*/
         .build();
+    }
+
+    public User from(UpdateUserInfoDto updateUserInfoDto){
+        this.userDisplayName = updateUserInfoDto.getUserDisplayName();
+        this.userPhone = updateUserInfoDto.getUserPhone();
+        this.imageProfileName = ImageProfile.valueOf(updateUserInfoDto.getImageProfileName());
+        return this;
     }
 }
