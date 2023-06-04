@@ -3,6 +3,7 @@ package com.project.moaidiary.controller;
 import com.project.moaidiary.service.user.UserCombineService;
 import com.project.moaidiary.service.user.UserService;
 import com.project.moaidiary.service.user.dto.CreateUserDto;
+import com.project.moaidiary.service.user.dto.UpdateUserInfoDto;
 import com.project.moaidiary.service.user.dto.UserInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +27,11 @@ public class UserController {
     @GetMapping("/{userEmail}")
     public UserInfoDto getUserInfo(@PathVariable String userEmail) {
         return userCombineService.getUserInfoByUserEmail(userEmail);
+    }
+
+    // 회원 정보 업데이트
+    @PutMapping("/{userEmail}")
+    public void updateUserInfo(@PathVariable String userEmail, @RequestBody UpdateUserInfoDto updateUserInfoDto){
+        userCombineService.updateUserInfo(userEmail, updateUserInfoDto);
     }
 }

@@ -18,4 +18,8 @@ public class UserService {
     public User getUserByUserEmail(String userEmail){
         return userRepository.findUserByUserEmail(userEmail).orElseThrow();
     }
+
+    public void putUser(User user) {
+        userRepository.save(user);
+    }
 }
