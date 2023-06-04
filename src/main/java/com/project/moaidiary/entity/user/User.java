@@ -1,8 +1,11 @@
 package com.project.moaidiary.entity.user;
 
 import com.project.moaidiary.moai_enum.ImageProfile;
+import com.project.moaidiary.service.user.dto.CreateUserDto;
 import jakarta.persistence.*;
 import lombok.*;
+
+import static com.project.moaidiary.moai_enum.ImageProfile.IMG_PROFILE_CHERRY;
 
 @Entity
 @Table(name = "moai_users")
@@ -33,4 +36,15 @@ public class User {
 
     @Column(name = "image_profile_name")
     private ImageProfile imageProfileName;
+
+    public static User from(CreateUserDto createUserDto) {
+        return User.builder()
+            .userName(createUserDto.getUserName())
+            .userDisplayName(createUserDto.getUserName())
+            .userEmail(createUserDto.getUserEmail())
+            .userPhone(null)
+            .firebaseUniqueKey(createUserDto.getFirebaseUniqueKey())
+            .imageProfileName(IMG_PROFILE_CHERRY) /* 하드코딩 - 이후 랜덤값으로 변경 필요*/
+        .build();
+    }
 }
