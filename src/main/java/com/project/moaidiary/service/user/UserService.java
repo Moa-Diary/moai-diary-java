@@ -14,4 +14,8 @@ public class UserService {
     public void createUser(CreateUserDto createUserDto) {
         userRepository.save(User.from(createUserDto));
     }
+
+    public User getUserByUserEmail(String userEmail){
+        return userRepository.findUserByUserEmail(userEmail).orElseThrow();
+    }
 }
