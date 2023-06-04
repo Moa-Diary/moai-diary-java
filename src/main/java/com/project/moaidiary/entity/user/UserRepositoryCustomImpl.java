@@ -31,4 +31,9 @@ public class UserRepositoryCustomImpl extends QuerydslRepositorySupport implemen
             .from(user)
             .where(user.userEmail.eq(userEmail)).fetchOne());
     }
+
+    @Override
+    public Boolean existsByUserEmail(String userEmail) {
+        return findUserByUserEmail(userEmail).isEmpty();
+    }
 }
