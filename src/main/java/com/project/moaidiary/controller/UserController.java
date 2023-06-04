@@ -34,4 +34,10 @@ public class UserController {
     public void updateUserInfo(@PathVariable String userEmail, @RequestBody UpdateUserInfoDto updateUserInfoDto){
         userCombineService.updateUserInfo(userEmail, updateUserInfoDto);
     }
+    
+    //이메일 중복 체크
+    @GetMapping("/check/email/{userEmail}")
+    public Boolean checkExistUserEmail(@PathVariable String userEmail){
+        return userService.isExistUserEmail(userEmail);
+    }
 }
