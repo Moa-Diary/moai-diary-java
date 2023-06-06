@@ -34,6 +34,12 @@ public class UserController {
     public void updateUserInfo(@PathVariable String userEmail, @RequestBody UpdateUserInfoDto updateUserInfoDto){
         userCombineService.updateUserInfo(userEmail, updateUserInfoDto);
     }
+
+    // 회원 탈퇴(삭제)
+    @DeleteMapping("/{userEmail}")
+    public void deleteUser(@PathVariable String userEmail) {
+        userCombineService.deleteUser(userEmail);
+    }
     
     //이메일 중복 체크
     @GetMapping("/check/email/{userEmail}")

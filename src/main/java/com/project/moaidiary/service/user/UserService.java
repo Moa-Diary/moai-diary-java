@@ -26,4 +26,8 @@ public class UserService {
     public Boolean isExistUserEmail(String userEmail) {
         return userRepository.existsByUserEmail(userEmail);
     }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
 }

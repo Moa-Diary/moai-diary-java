@@ -20,4 +20,9 @@ public class UserCombineService {
         User user = userService.getUserByUserEmail(userEmail);
         userService.putUser(user.from(updateUserInfoDto));
     }
+
+    public void deleteUser(String userEmail) {
+        User user = userService.getUserByUserEmail(userEmail);
+        userService.deleteUser(user);
+    }
 }
