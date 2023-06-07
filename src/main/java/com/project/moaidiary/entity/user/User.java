@@ -1,7 +1,8 @@
 package com.project.moaidiary.entity.user;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "moai_users")
