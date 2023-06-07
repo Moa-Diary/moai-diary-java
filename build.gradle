@@ -64,7 +64,7 @@ tasks.named('asciidoctor') {
 }
 
 // QueryDSL 설정
-def querydslDir = "$buildDir/generated/querydsl"
+def querydslDir = "$buildDir/querydsl/generated"
 
 querydsl {
 	library = "com.querydsl:querydsl-apt"
