@@ -3,8 +3,9 @@ package com.project.moaidiary.entity.user;
 import com.project.moaidiary.moai_enum.ImageProfile;
 import com.project.moaidiary.service.user.dto.CreateUserDto;
 import com.project.moaidiary.service.user.dto.UpdateUserInfoDto;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 import static com.project.moaidiary.moai_enum.ImageProfile.IMG_PROFILE_CHERRY;
 
