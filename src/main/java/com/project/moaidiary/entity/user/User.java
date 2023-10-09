@@ -7,6 +7,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
+
 import static com.project.moaidiary.moai_enum.ImageProfile.IMG_PROFILE_CHERRY;
 
 @Entity
@@ -15,7 +17,7 @@ import static com.project.moaidiary.moai_enum.ImageProfile.IMG_PROFILE_CHERRY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
