@@ -9,6 +9,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id 'com.google.cloud.tools.jib' version '3.1.4'
 }
 
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
@@ -30,9 +31,11 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	/* MySQL */
+	/* Database */
 	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'com.h2database:h2'
 
 	/* 보안 */
 	//implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -44,10 +47,13 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'com.querydsl:querydsl-apt'
 
+	/* lombok */
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'com.h2database:h2'
+
+	/* chat GPT */
+	implementation group: 'com.theokanning.openai-gpt3-java', name: 'service', version: '0.14.0'
+	implementation group: 'io.github.flashvayne', name: 'chatgpt-spring-boot-starter', version: '1.0.4'
 }
 
 tasks.named('test') {
