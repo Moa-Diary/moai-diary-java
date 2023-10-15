@@ -52,4 +52,8 @@ public class Diary implements Serializable {
     public void modifyIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
     }
+
+    public void modifyIsAvailableComment(Boolean isAvailableComment) {
+        this.isAvailableComment = isAvailableComment;
+    }
 }
