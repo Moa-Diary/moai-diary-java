@@ -24,4 +24,10 @@ public class DiaryService {
         diary.modifyIsPublic(isPublic);
         diaryRepository.save(diary);
     }
+
+    public void modifyDiaryIsCommentAvailable(Long diaryId, Boolean isAvailableComment) {
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow(() -> new CustomException(NOT_EXIST_DIARY));
+        diary.modifyIsAvailableComment(isAvailableComment);
+        diaryRepository.save(diary);
+    }
 }

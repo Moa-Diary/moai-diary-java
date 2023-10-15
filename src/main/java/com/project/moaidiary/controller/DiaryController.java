@@ -22,4 +22,9 @@ public class DiaryController {
     public void changeIsPublic(@PathVariable Long diaryId, @PathVariable Boolean isPublic) {
         diaryService.modifyDiaryIsPublic(diaryId, isPublic);
     }
+
+    @PutMapping("/{diaryId}/comment/available/{isAvailableComment}")
+    public void changeIsCommentAvailable(@PathVariable Long diaryId, @PathVariable Boolean isAvailableComment){
+        diaryService.modifyDiaryIsCommentAvailable(diaryId, isAvailableComment);
+    }
 }
