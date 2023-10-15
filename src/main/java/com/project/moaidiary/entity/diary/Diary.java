@@ -48,4 +48,8 @@ public class Diary implements Serializable {
 
     @Column(name = "created_at", nullable = false, length = 30)
     private LocalDate createdAt;
+
+    public void modifyIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 }
