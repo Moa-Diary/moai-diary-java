@@ -24,9 +24,9 @@ public class Diary implements Serializable {
     @Column(name = "diary_id")
     private Long diaryId;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, optional = false)
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "title", nullable = false, length = 50, unique = true)
     private String title;
