@@ -21,7 +21,7 @@ public class DiaryLike implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "diary_like_id")
-    private Long diaryId;
+    private Long diaryLikeId;
 
     @ManyToOne
     @JoinColumn(name = "diary_id")
@@ -30,4 +30,11 @@ public class DiaryLike implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public static DiaryLike from (User user, Diary diary) {
+        return DiaryLike.builder()
+            .user(user)
+            .diary(diary)
+            .build();
+    }
 }

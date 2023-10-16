@@ -1,5 +1,7 @@
 package com.project.moaidiary.entity.diary.like;
 
-public interface DiaryLikeRepositoryCustom {
+import java.util.Optional;
 
+public interface DiaryLikeRepositoryCustom {
+    Optional<DiaryLike> findDiaryLikeByDiaryIdAndUserId(Long diaryId, Long userId);
 }
