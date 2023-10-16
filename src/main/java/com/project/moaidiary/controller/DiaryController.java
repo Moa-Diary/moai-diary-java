@@ -3,6 +3,7 @@ package com.project.moaidiary.controller;
 import com.project.moaidiary.service.diary.DiaryCombineService;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
 import com.project.moaidiary.service.diary.DiaryService;
+import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +46,10 @@ public class DiaryController {
         return DiaryCountDto.builder()
             .count(diaryLikeService.getDiaryLikeCountByUserId(userId))
             .build();
+    }
+
+    @PutMapping("/{diaryId}")
+    public void modifyDiary(@RequestBody ModifyDiaryDto modifyDiaryDto, @PathVariable Long diaryId) {
+        diaryCombineService.modifyDiary(modifyDiaryDto, diaryId);
     }
 }
