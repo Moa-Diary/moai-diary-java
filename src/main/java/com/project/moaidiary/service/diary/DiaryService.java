@@ -38,4 +38,8 @@ public class DiaryService {
     public void deleteById(Long diaryId) {
         diaryRepository.deleteById(diaryId);
     }
+
+    public void putDiary(Diary diary) {
+        diaryRepository.save(diary);
+    }
 }
