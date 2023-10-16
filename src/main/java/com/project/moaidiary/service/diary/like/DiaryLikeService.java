@@ -25,4 +25,8 @@ public class DiaryLikeService {
     public void addDiaryLike(DiaryLike diaryLike) {
         diaryLikeRepository.save(diaryLike);
     }
+
+    public Long getDiaryLikeCountByUserId(Long userId) {
+        return diaryLikeRepository.findDiaryLikeCountByUserId(userId);
+    }
 }

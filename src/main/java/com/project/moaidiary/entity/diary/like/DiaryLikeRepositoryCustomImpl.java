@@ -30,4 +30,12 @@ public class DiaryLikeRepositoryCustomImpl extends QuerydslRepositorySupport imp
                 .fetchFirst()
         );
     }
+
+    @Override
+    public Long findDiaryLikeCountByUserId(Long userId) {
+        return queryFactory.select(diaryLike.count())
+            .from(diaryLike)
+            .where(diaryLike.user.userId.eq(userId))
+            .fetchFirst();
+    }
 }
