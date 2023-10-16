@@ -1,8 +1,8 @@
 package com.project.moaidiary.controller;
 
-import com.project.moaidiary.service.diary.dto.DiaryCombineService;
+import com.project.moaidiary.service.diary.DiaryCombineService;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
-import com.project.moaidiary.service.diary.dto.DiaryService;
+import com.project.moaidiary.service.diary.DiaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +26,10 @@ public class DiaryController {
     @PutMapping("/{diaryId}/comment/available/{isAvailableComment}")
     public void changeIsCommentAvailable(@PathVariable Long diaryId, @PathVariable Boolean isAvailableComment){
         diaryService.modifyDiaryIsCommentAvailable(diaryId, isAvailableComment);
+    }
+
+    @PutMapping("/{diaryId}/user/{userId}/like")
+    public void addDiaryLike(@PathVariable Long diaryId, @PathVariable Long userId){
+        diaryCombineService.modifyDiaryLike(diaryId, userId);
     }
 }

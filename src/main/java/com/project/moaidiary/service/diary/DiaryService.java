@@ -1,4 +1,4 @@
-package com.project.moaidiary.service.diary.dto;
+package com.project.moaidiary.service.diary;
 
 import com.project.moaidiary.entity.diary.Diary;
 import com.project.moaidiary.entity.diary.DiaryRepository;
@@ -14,6 +14,10 @@ import static com.project.moaidiary.exception.CustomErrorCode.NOT_EXIST_DIARY;
 @RequiredArgsConstructor
 public class DiaryService {
     private final DiaryRepository diaryRepository;
+
+    public Diary getDiaryByDiaryId(Long diaryId) {
+        return diaryRepository.findById(diaryId).orElseThrow(() -> new CustomException(NOT_EXIST_DIARY));
+    }
 
     public Long getDiaryCountByUserId(Long userId) {
         return diaryRepository.diaryCountByUserId(userId);

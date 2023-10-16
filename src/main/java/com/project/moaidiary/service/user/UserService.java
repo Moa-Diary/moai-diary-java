@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.findUserByUserEmail(userEmail).orElseThrow(() -> new CustomException(NOT_EXIST_USER));
     }
 
+    public User getUserByUserId(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException(NOT_EXIST_USER));
+    }
+
     public void putUser(User user) {
         userRepository.save(user);
     }
