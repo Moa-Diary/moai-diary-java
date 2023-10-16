@@ -34,4 +34,8 @@ public class DiaryService {
         diary.modifyIsAvailableComment(isAvailableComment);
         diaryRepository.save(diary);
     }
+
+    public void deleteById(Long diaryId) {
+        diaryRepository.deleteById(diaryId);
+    }
 }

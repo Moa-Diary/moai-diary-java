@@ -32,4 +32,9 @@ public class DiaryController {
     public void addDiaryLike(@PathVariable Long diaryId, @PathVariable Long userId){
         diaryCombineService.modifyDiaryLike(diaryId, userId);
     }
+
+    @DeleteMapping("/{diaryId}")
+    public void deleteDiary(@PathVariable Long diaryId) {
+        diaryService.deleteById(diaryId);
+    }
 }
