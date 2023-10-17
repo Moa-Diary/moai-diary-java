@@ -3,8 +3,11 @@ package com.project.moaidiary.entity.user;
 import com.project.moaidiary.moai_enum.ImageProfile;
 import com.project.moaidiary.service.user.dto.CreateUserDto;
 import com.project.moaidiary.service.user.dto.UpdateUserInfoDto;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
+
+import java.io.Serializable;
 
 import static com.project.moaidiary.moai_enum.ImageProfile.IMG_PROFILE_CHERRY;
 
@@ -14,7 +17,7 @@ import static com.project.moaidiary.moai_enum.ImageProfile.IMG_PROFILE_CHERRY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
