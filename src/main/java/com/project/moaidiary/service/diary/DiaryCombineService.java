@@ -7,6 +7,8 @@ import com.project.moaidiary.entity.user.User;
 import com.project.moaidiary.service.diary.comment.DiaryCommentService;
 import com.project.moaidiary.service.diary.dto.DiaryCommentDto;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
+import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
+import com.project.moaidiary.service.diary.image.DiaryImageService;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
 import com.project.moaidiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class DiaryCombineService {
     private final DiaryService diaryService;
     private final DiaryLikeService diaryLikeService;
     private final DiaryCommentService diaryCommentService;
+    private final DiaryImageService diaryImageService;
     private final UserService userService;
 
     public DiaryCountDto countDiaryByUserEmail(Long userId) {
@@ -50,5 +53,17 @@ public class DiaryCombineService {
             .comment(diaryCommentDto.getComment())
             .build()
         );
+    }
+  
+    public void modifyDiary(ModifyDiaryDto modifyDiaryDto, Long diaryId) {
+        Diary diary = diaryService.getDiaryByDiaryId(diaryId);
+        diary.modifyContent(modifyDiaryDto);
+
+        if (!modifyDiaryDto.getImagePaths().isEmpty()) {
+            diaryImageService.removeDiaryImageByDiaryId(diaryId);
+            diaryImageService.addImagePaths(diary, modifyDiaryDto.getImagePaths());
+        }
+
+        diaryService.putDiary(diary);
     }
 }

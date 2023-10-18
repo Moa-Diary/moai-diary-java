@@ -2,6 +2,7 @@ package com.project.moaidiary.entity.diary;
 
 import com.project.moaidiary.entity.user.User;
 import com.project.moaidiary.moai_enum.EmotionEnum;
+import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Objects;
 
 @Entity
 @Table(name = "diary")
@@ -55,5 +58,17 @@ public class Diary implements Serializable {
 
     public void modifyIsAvailableComment(Boolean isAvailableComment) {
         this.isAvailableComment = isAvailableComment;
+    }
+
+    public void modifyContent(ModifyDiaryDto modifyDiaryDto) {
+        if (Objects.nonNull(modifyDiaryDto.getTitle())){
+            this.title = modifyDiaryDto.getTitle();
+        }
+        if (Objects.nonNull(modifyDiaryDto.getContent())){
+            this.content = modifyDiaryDto.getContent();
+        }
+        if (!modifyDiaryDto.getHashTags().isEmpty()){
+            this.hashTag = String.join(",", modifyDiaryDto.getHashTags());
+        }
     }
 }
