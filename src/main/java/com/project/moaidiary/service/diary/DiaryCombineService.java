@@ -2,9 +2,11 @@ package com.project.moaidiary.service.diary;
 
 import com.project.moaidiary.entity.diary.Diary;
 import com.project.moaidiary.entity.diary.comment.DiaryComment;
+import com.project.moaidiary.entity.diary.comment.like.DiaryCommentLike;
 import com.project.moaidiary.entity.diary.like.DiaryLike;
 import com.project.moaidiary.entity.user.User;
 import com.project.moaidiary.service.diary.comment.DiaryCommentService;
+import com.project.moaidiary.service.diary.comment.like.DiaryCommentLikeService;
 import com.project.moaidiary.service.diary.dto.DiaryCommentDto;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
 import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
@@ -23,6 +25,7 @@ public class DiaryCombineService {
     private final DiaryLikeService diaryLikeService;
     private final DiaryCommentService diaryCommentService;
     private final DiaryImageService diaryImageService;
+    private final DiaryCommentLikeService diaryCommentLikeService;
     private final UserService userService;
 
     public DiaryCountDto countDiaryByUserEmail(Long userId) {
@@ -65,5 +68,16 @@ public class DiaryCombineService {
         }
 
         diaryService.putDiary(diary);
+    }
+
+    public void modifyDiaryComment(Long commentId, Long userId) {
+        Optional<DiaryCommentLike> diaryCommentLike = diaryCommentLikeService.getDiaryCommentLikeByDiaryCommentIdAndUserId(commentId, userId);
+        if (diaryCommentLike.isPresent()) {
+            diaryCommentLikeService.deleteDiaryCommentLike(diaryCommentLike.get());
+        } else{
+            DiaryComment diaryComment = diaryCommentService.getDiaryCommentByCommentId(commentId);
+            User user = userService.getUserByUserId(userId);
+            diaryCommentLikeService.addDiaryLikeComment(DiaryCommentLike.builder().diaryComment(diaryComment).user(user).build());
+        }
     }
 }

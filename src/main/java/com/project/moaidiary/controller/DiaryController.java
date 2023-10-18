@@ -58,4 +58,9 @@ public class DiaryController {
     public void modifyDiary(@RequestBody ModifyDiaryDto modifyDiaryDto, @PathVariable Long diaryId) {
         diaryCombineService.modifyDiary(modifyDiaryDto, diaryId);
     }
+
+    @PutMapping("/comment/{commentId}/user/{userId}/like")
+    public void diaryCommentLike(@PathVariable Long commentId, @PathVariable Long userId) {
+        diaryCombineService.modifyDiaryComment(commentId, userId);
+    }
 }
