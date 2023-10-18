@@ -1,6 +1,7 @@
 package com.project.moaidiary.controller;
 
 import com.project.moaidiary.service.diary.DiaryCombineService;
+import com.project.moaidiary.service.diary.dto.DiaryCommentDto;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
 import com.project.moaidiary.service.diary.DiaryService;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
@@ -45,5 +46,10 @@ public class DiaryController {
         return DiaryCountDto.builder()
             .count(diaryLikeService.getDiaryLikeCountByUserId(userId))
             .build();
+    }
+
+    @PostMapping("/{diaryId}/comment")
+    public void putDiaryComment(@PathVariable Long diaryId, @RequestBody DiaryCommentDto diaryCommentDto) {
+        diaryCombineService.putDiaryComment(diaryId, diaryCommentDto);
     }
 }
