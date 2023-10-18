@@ -54,7 +54,7 @@ public class DiaryCombineService {
             .build()
         );
     }
-  
+
     public void modifyDiary(ModifyDiaryDto modifyDiaryDto, Long diaryId) {
         Diary diary = diaryService.getDiaryByDiaryId(diaryId);
         diary.modifyContent(modifyDiaryDto);
