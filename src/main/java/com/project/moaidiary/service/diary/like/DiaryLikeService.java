@@ -29,4 +29,8 @@ public class DiaryLikeService {
     public Long getDiaryLikeCountByUserId(Long userId) {
         return diaryLikeRepository.findDiaryLikeCountByUserId(userId);
     }
+
+    public Long getDiaryLikeCountByDiaryId(Long diaryId) {
+        return diaryLikeRepository.findDiaryLikeCountByDiaryId(diaryId);
+    }
 }

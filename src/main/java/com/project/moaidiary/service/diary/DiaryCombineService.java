@@ -3,20 +3,26 @@ package com.project.moaidiary.service.diary;
 import com.project.moaidiary.entity.diary.Diary;
 import com.project.moaidiary.entity.diary.comment.DiaryComment;
 import com.project.moaidiary.entity.diary.comment.like.DiaryCommentLike;
+import com.project.moaidiary.entity.diary.image.DiaryImage;
 import com.project.moaidiary.entity.diary.like.DiaryLike;
 import com.project.moaidiary.entity.user.User;
 import com.project.moaidiary.service.diary.comment.DiaryCommentService;
+import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDetailDto;
 import com.project.moaidiary.service.diary.comment.like.DiaryCommentLikeService;
-import com.project.moaidiary.service.diary.dto.DiaryCommentDto;
+import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDto;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
+import com.project.moaidiary.service.diary.dto.DiaryDetailDto;
 import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
 import com.project.moaidiary.service.diary.image.DiaryImageService;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
+import com.project.moaidiary.service.diary.vo.DiaryDetailVo;
 import com.project.moaidiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +41,11 @@ public class DiaryCombineService {
             .build();
     }
 
-    public void modifyDiaryLike(Long diaryId, Long userId){
+    public void modifyDiaryLike(Long diaryId, Long userId) {
         Optional<DiaryLike> diaryLike = diaryLikeService.getDiaryLikeByDiaryIdAndUserId(diaryId, userId);
         if (diaryLike.isPresent()) {
             diaryLikeService.deleteDiaryLike(diaryLike.get());
-        } else{
+        } else {
             User user = userService.getUserByUserId(userId);
             Diary diary = diaryService.getDiaryByDiaryId(diaryId);
             diaryLikeService.addDiaryLike(DiaryLike.from(user, diary));
@@ -74,10 +80,41 @@ public class DiaryCombineService {
         Optional<DiaryCommentLike> diaryCommentLike = diaryCommentLikeService.getDiaryCommentLikeByDiaryCommentIdAndUserId(commentId, userId);
         if (diaryCommentLike.isPresent()) {
             diaryCommentLikeService.deleteDiaryCommentLike(diaryCommentLike.get());
-        } else{
+        } else {
             DiaryComment diaryComment = diaryCommentService.getDiaryCommentByCommentId(commentId);
             User user = userService.getUserByUserId(userId);
             diaryCommentLikeService.addDiaryLikeComment(DiaryCommentLike.builder().diaryComment(diaryComment).user(user).build());
         }
+    }
+
+    public DiaryDetailDto getDiaryDetail(Long diaryId) {
+        DiaryDetailVo diaryDetailVo = diaryService.getDiaryDetailByDiaryId(diaryId);
+        List<String> diaryImageUrls = diaryImageService.getDiaryImagesByDiaryId(diaryId).stream().map(DiaryImage::getImagePath).collect(Collectors.toList());
+        Long diaryLikeCount = diaryLikeService.getDiaryLikeCountByDiaryId(diaryId);
+
+        List<DiaryCommentDetailDto> diaryCommentDetailDtoList = diaryCommentService.getDiaryCommentWithLikeCountByDiaryId(diaryId).stream().map(it ->
+            DiaryCommentDetailDto.builder()
+                .commentBy(it.getCommentBy())
+                .commentByImage("")
+                .comment(it.getComment())
+                .commentId(it.getCommentId())
+                .commentLikeCount(diaryCommentLikeService.getDiaryCommentLikeCountByDiaryCommentId(it.getCommentId()))
+                .build()
+        ).collect(Collectors.toList());
+
+        return DiaryDetailDto.builder()
+            .diaryId(diaryDetailVo.getDiaryId())
+            .title(diaryDetailVo.getTitle())
+            .content(diaryDetailVo.getContent())
+            .likeCount(diaryLikeCount)
+            .commentCount(diaryCommentDetailDtoList.size())
+            .hashTags(List.of(diaryDetailVo.getHashTag().split(",")))
+            .emotion(diaryDetailVo.getEmotion())
+            .createdAt(diaryDetailVo.getCreatedAt())
+            .isPublic(diaryDetailVo.getIsPublic())
+            .isAvailableComment(diaryDetailVo.getIsAvailableComment())
+            .imageUrls(diaryImageUrls)
+            .comment(diaryCommentDetailDtoList)
+            .build();
     }
 }

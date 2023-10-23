@@ -1,4 +1,4 @@
-package com.project.moaidiary.service.diary.dto;
+package com.project.moaidiary.service.diary.comment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

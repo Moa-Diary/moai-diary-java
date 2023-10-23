@@ -12,7 +12,7 @@ import static com.project.moaidiary.entity.diary.comment.like.QDiaryCommentLike.
 public class DiaryCommentLikeRepositoryCustomImpl extends QuerydslRepositorySupport implements DiaryCommentLikeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
-    public DiaryCommentLikeRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory){
+    public DiaryCommentLikeRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
         super(DiaryCommentLike.class);
         this.queryFactory = jpaQueryFactory;
     }
@@ -21,16 +21,26 @@ public class DiaryCommentLikeRepositoryCustomImpl extends QuerydslRepositorySupp
     public Optional<DiaryCommentLike> findByDiaryCommentIdAndUserId(Long commentId, Long userId) {
         return Optional.ofNullable(
             queryFactory.select(
-                Projections.constructor(
-                    DiaryCommentLike.class,
-                    diaryCommentLike.diaryCommentLikeId,
-                    diaryCommentLike.diaryComment,
-                    diaryCommentLike.user
+                    Projections.constructor(
+                        DiaryCommentLike.class,
+                        diaryCommentLike.diaryCommentLikeId,
+                        diaryCommentLike.diaryComment,
+                        diaryCommentLike.user
+                    )
                 )
+                .from(diaryCommentLike)
+                .where(diaryCommentLike.diaryComment.diaryCommentId.eq(commentId).and(diaryCommentLike.user.userId.eq(userId)))
+                .fetchFirst()
+        );
+    }
+
+    @Override
+    public Long findDiaryCommentLikeCountByDiaryCommentId(Long diaryCommentId) {
+        return queryFactory.select(
+                diaryCommentLike.count()
             )
             .from(diaryCommentLike)
-            .where(diaryCommentLike.diaryComment.diaryCommentId.eq(commentId).and(diaryCommentLike.user.userId.eq(userId)))
-            .fetchFirst()
-        );
+            .where(diaryCommentLike.diaryComment.diaryCommentId.eq(diaryCommentId))
+            .fetchFirst();
     }
 }

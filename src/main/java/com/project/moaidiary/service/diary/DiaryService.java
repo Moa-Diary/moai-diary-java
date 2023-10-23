@@ -3,11 +3,16 @@ package com.project.moaidiary.service.diary;
 import com.project.moaidiary.entity.diary.Diary;
 import com.project.moaidiary.entity.diary.DiaryRepository;
 import com.project.moaidiary.exception.CustomException;
+import com.project.moaidiary.service.diary.dto.DiaryDetailDto;
+import com.project.moaidiary.service.diary.vo.DiaryDetailVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.project.moaidiary.exception.CustomErrorCode.NOT_EXIST_DIARY;
+import static com.project.moaidiary.exception.CustomErrorCode.NOT_EXIST_DIARY_COMMENT;
 
 @Service
 @Slf4j
@@ -41,5 +46,9 @@ public class DiaryService {
 
     public void putDiary(Diary diary) {
         diaryRepository.save(diary);
+    }
+
+    public DiaryDetailVo getDiaryDetailByDiaryId(Long diaryId){
+        return diaryRepository.findDiaryDetailByDiaryId(diaryId).orElseThrow(() -> new CustomException(NOT_EXIST_DIARY_COMMENT));
     }
 }

@@ -1,9 +1,10 @@
 package com.project.moaidiary.controller;
 
 import com.project.moaidiary.service.diary.DiaryCombineService;
-import com.project.moaidiary.service.diary.dto.DiaryCommentDto;
+import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDto;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
 import com.project.moaidiary.service.diary.DiaryService;
+import com.project.moaidiary.service.diary.dto.DiaryDetailDto;
 import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,11 @@ public class DiaryController {
     @GetMapping("/user/{userId}/count")
     public DiaryCountDto diaryCount(@PathVariable Long userId) {
         return diaryCombineService.countDiaryByUserEmail(userId);
+    }
+
+    @GetMapping("/{diaryId}")
+    public DiaryDetailDto getDiary(@PathVariable Long diaryId){
+        return diaryCombineService.getDiaryDetail(diaryId);
     }
 
     @PutMapping("/{diaryId}/public/{isPublic}")

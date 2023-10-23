@@ -25,4 +25,8 @@ public class DiaryCommentLikeService {
     public void deleteDiaryCommentLike(DiaryCommentLike diaryCommentLike) {
         diaryCommentLikeRepository.delete(diaryCommentLike);
     }
+
+    public Long getDiaryCommentLikeCountByDiaryCommentId(Long diaryCommentId) {
+        return diaryCommentLikeRepository.findDiaryCommentLikeCountByDiaryCommentId(diaryCommentId);
+    }
 }
