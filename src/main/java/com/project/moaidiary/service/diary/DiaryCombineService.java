@@ -6,14 +6,12 @@ import com.project.moaidiary.entity.diary.comment.like.DiaryCommentLike;
 import com.project.moaidiary.entity.diary.image.DiaryImage;
 import com.project.moaidiary.entity.diary.like.DiaryLike;
 import com.project.moaidiary.entity.user.User;
+import com.project.moaidiary.moai_enum.EmotionEnum;
 import com.project.moaidiary.service.diary.comment.DiaryCommentService;
 import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDetailDto;
 import com.project.moaidiary.service.diary.comment.like.DiaryCommentLikeService;
 import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDto;
-import com.project.moaidiary.service.diary.dto.DiaryCountDto;
-import com.project.moaidiary.service.diary.dto.DiaryDetailDto;
-import com.project.moaidiary.service.diary.dto.DiaryPageDto;
-import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
+import com.project.moaidiary.service.diary.dto.*;
 import com.project.moaidiary.service.diary.image.DiaryImageService;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
 import com.project.moaidiary.service.diary.vo.DiaryDetailVo;
@@ -24,6 +22,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -165,5 +165,19 @@ public class DiaryCombineService {
             .page(diaryDetailVo.getNumber())
             .hasMoreResult(diaryDetailVo.hasPrevious())
             .build();
+    }
+
+    public void addDiary(Long userId, AddDiaryDto addDiaryDto) {
+        User user = userService.getUserByUserId(userId);
+        diaryService.addDiary(Diary.builder()
+                .user(user)
+                .title(addDiaryDto.getTitle())
+                .content(addDiaryDto.getContent())
+                .hashTag(addDiaryDto.getHashTag())
+                .emotionEnum(EmotionEnum.valueOf(addDiaryDto.getEmotion()))
+                .isPublic(addDiaryDto.isPublic())
+                .isAvailableComment(addDiaryDto.isAvailableComment())
+                .createdAt(LocalDate.now())
+            .build());
     }
 }

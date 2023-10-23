@@ -2,15 +2,13 @@ package com.project.moaidiary.controller;
 
 import com.project.moaidiary.service.diary.DiaryCombineService;
 import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDto;
-import com.project.moaidiary.service.diary.dto.DiaryCountDto;
+import com.project.moaidiary.service.diary.dto.*;
 import com.project.moaidiary.service.diary.DiaryService;
-import com.project.moaidiary.service.diary.dto.DiaryDetailDto;
-import com.project.moaidiary.service.diary.dto.DiaryPageDto;
-import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.Path;
 
 import java.util.List;
 
@@ -77,5 +75,10 @@ public class DiaryController {
     @PutMapping("/comment/{commentId}/user/{userId}/like")
     public void diaryCommentLike(@PathVariable Long commentId, @PathVariable Long userId) {
         diaryCombineService.modifyDiaryComment(commentId, userId);
+    }
+
+    @PostMapping("/internal-api/user/{userId}")
+    public void addDiary(@PathVariable Long userId, @RequestBody AddDiaryDto addDiaryDto ){
+        diaryCombineService.addDiary(userId, addDiaryDto);
     }
 }

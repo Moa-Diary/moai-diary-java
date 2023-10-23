@@ -58,4 +58,8 @@ public class DiaryService {
     public Page<DiaryDetailVo> getDiaryDetailByUserId(Long userId, Pageable pageable) {
         return diaryRepository.findAllDiaryDetailByUserId(userId, pageable);
     }
+
+    public void addDiary(Diary diary) {
+        diaryRepository.save(diary);
+    }
 }
