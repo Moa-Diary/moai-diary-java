@@ -108,6 +108,8 @@ public class DiaryCombineService {
 
         return DiaryDetailDto.builder()
             .diaryId(diaryDetailVo.getDiaryId())
+            .userDisplayName(diaryDetailVo.getUserDisplayName())
+            .userProfileImage(diaryDetailVo.getImageProfileName().getDescription())
             .title(diaryDetailVo.getTitle())
             .content(diaryDetailVo.getContent())
             .likeCount(diaryLikeCount)
@@ -142,6 +144,8 @@ public class DiaryCombineService {
 
                 return DiaryDetailDto.builder()
                     .diaryId(diaryDetail.getDiaryId())
+                    .userDisplayName(diaryDetail.getUserDisplayName())
+                    .userProfileImage(diaryDetail.getImageProfileName().getDescription())
                     .title(diaryDetail.getTitle())
                     .content(diaryDetail.getContent())
                     .likeCount(diaryLikeCount)

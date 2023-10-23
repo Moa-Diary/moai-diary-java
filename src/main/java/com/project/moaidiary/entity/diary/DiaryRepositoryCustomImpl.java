@@ -38,6 +38,8 @@ public class DiaryRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                     Projections.fields(
                         DiaryDetailVo.class,
                         diary.diaryId,
+                        diary.user.userDisplayName,
+                        diary.user.imageProfileName,
                         diary.title,
                         diary.content,
                         diary.hashTag,
@@ -57,6 +59,8 @@ public class DiaryRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                     Projections.fields(
                         DiaryDetailVo.class,
                         diary.diaryId,
+                        diary.user.userDisplayName,
+                        diary.user.imageProfileName,
                         diary.title,
                         diary.content,
                         diary.hashTag,

@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class DiaryDetailDto {
     private Long diaryId;
+    private String userDisplayName;
+    private String userProfileImage;
     private String title;
     private String content;
     private Long likeCount;
