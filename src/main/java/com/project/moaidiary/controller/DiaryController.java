@@ -32,7 +32,11 @@ public class DiaryController {
 
     @GetMapping("/user/{userId}")
     public DiaryPageDto getDiaryList(@PathVariable Long userId, Pageable pageable){
-        return diaryCombineService.getDiaryList(userId, pageable);
+        if (userId != 0) {
+            return diaryCombineService.getDiaryList(userId, pageable);
+        }else{
+            return diaryCombineService.getOtherDiaryList(pageable);
+        }
     }
 
     @PutMapping("/{diaryId}/public/{isPublic}")

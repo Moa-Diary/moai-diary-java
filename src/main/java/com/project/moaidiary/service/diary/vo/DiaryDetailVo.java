@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Builder
@@ -20,7 +22,7 @@ public class DiaryDetailVo {
     private String content;
     private String hashTag;
     private String emotion;
-    private LocalDate createdAt;
+    private Date createdAt;
     private Boolean isPublic;
     private Boolean isAvailableComment;
 }

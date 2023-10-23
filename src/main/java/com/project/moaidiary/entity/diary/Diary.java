@@ -12,7 +12,9 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -50,7 +52,7 @@ public class Diary implements Serializable {
     private boolean isAvailableComment;
 
     @Column(name = "created_at", nullable = false, length = 30)
-    private LocalDate createdAt;
+    private Date createdAt;
 
     public void modifyIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;

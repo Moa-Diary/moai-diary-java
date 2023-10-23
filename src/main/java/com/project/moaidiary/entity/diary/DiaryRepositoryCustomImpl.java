@@ -77,4 +77,28 @@ public class DiaryRepositoryCustomImpl extends QuerydslRepositorySupport impleme
 
             return new PageImpl<>(content, pageable, content.size());
     }
+
+    @Override
+    public Page<DiaryDetailVo> findAllDiaryDetail(Pageable pageable) {
+        List<DiaryDetailVo> content = queryFactory.select(
+                Projections.fields(
+                    DiaryDetailVo.class,
+                    diary.diaryId,
+                    diary.user.userDisplayName,
+                    diary.user.imageProfileName,
+                    diary.title,
+                    diary.content,
+                    diary.hashTag,
+                    diary.emotionEnum,
+                    diary.createdAt,
+                    diary.isPublic,
+                    diary.isAvailableComment
+                ))
+            .from(diary)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        return new PageImpl<>(content, pageable, content.size());
+    }
 }

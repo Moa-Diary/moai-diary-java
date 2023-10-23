@@ -59,6 +59,10 @@ public class DiaryService {
         return diaryRepository.findAllDiaryDetailByUserId(userId, pageable);
     }
 
+    public Page<DiaryDetailVo> getDiaryDetail(Pageable pageable) {
+        return diaryRepository.findAllDiaryDetail(pageable);
+    }
+
     public void addDiary(Diary diary) {
         diaryRepository.save(diary);
     }

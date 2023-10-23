@@ -23,7 +23,7 @@ public class DiaryDetailDto {
     private int commentCount;
     private List<String> hashTags;
     private String emotion;
-    private LocalDate createdAt;
+    private Long createdAt;
     private Boolean isPublic;
     private Boolean isAvailableComment;
     private List<String> imageUrls;

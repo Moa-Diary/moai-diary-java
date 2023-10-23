@@ -7,6 +7,7 @@ import com.project.moaidiary.entity.diary.image.DiaryImage;
 import com.project.moaidiary.entity.diary.like.DiaryLike;
 import com.project.moaidiary.entity.user.User;
 import com.project.moaidiary.moai_enum.EmotionEnum;
+import com.project.moaidiary.moai_enum.ImageProfile;
 import com.project.moaidiary.service.diary.comment.DiaryCommentService;
 import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDetailDto;
 import com.project.moaidiary.service.diary.comment.like.DiaryCommentLikeService;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -116,7 +118,7 @@ public class DiaryCombineService {
             .commentCount(diaryCommentDetailDtoList.size())
             .hashTags(List.of(diaryDetailVo.getHashTag().split(",")))
             .emotion(diaryDetailVo.getEmotion())
-            .createdAt(diaryDetailVo.getCreatedAt())
+            .createdAt(diaryDetailVo.getCreatedAt().getTime())
             .isPublic(diaryDetailVo.getIsPublic())
             .isAvailableComment(diaryDetailVo.getIsAvailableComment())
             .imageUrls(diaryImageUrls)
@@ -134,7 +136,7 @@ public class DiaryCombineService {
 
                 List<DiaryCommentDetailDto> diaryCommentDetailDtoList = diaryCommentService.getDiaryCommentWithLikeCountByDiaryId(diaryDetail.getDiaryId()).stream().map(it ->
                     DiaryCommentDetailDto.builder()
-                        .commentBy(it.getCommentBy())
+                        .commentBy("익명")
                         .commentByImage("")
                         .comment(it.getComment())
                         .commentId(it.getCommentId())
@@ -145,14 +147,61 @@ public class DiaryCombineService {
                 return DiaryDetailDto.builder()
                     .diaryId(diaryDetail.getDiaryId())
                     .userDisplayName(diaryDetail.getUserDisplayName())
-                    .userProfileImage(diaryDetail.getImageProfileName().getDescription())
+                    .userProfileImage("")
                     .title(diaryDetail.getTitle())
                     .content(diaryDetail.getContent())
                     .likeCount(diaryLikeCount)
                     .commentCount(diaryCommentDetailDtoList.size())
                     .hashTags(List.of(diaryDetail.getHashTag().split(",")))
                     .emotion(diaryDetail.getEmotion())
-                    .createdAt(diaryDetail.getCreatedAt())
+                    .createdAt(diaryDetail.getCreatedAt().getTime())
+                    .isPublic(diaryDetail.getIsPublic())
+                    .isAvailableComment(diaryDetail.getIsAvailableComment())
+                    .imageUrls(diaryImageUrls)
+                    .comment(diaryCommentDetailDtoList)
+                    .build();
+            }
+        ).collect(Collectors.toList());
+
+        return DiaryPageDto.builder()
+            .content(diaryDetailDtoList)
+            .totalPages(diaryDetailVo.getTotalPages())
+            .totalElements(diaryDetailVo.getTotalElements())
+            .size(diaryDetailVo.getSize())
+            .page(diaryDetailVo.getNumber())
+            .hasMoreResult(diaryDetailVo.hasPrevious())
+            .build();
+    }
+
+    public DiaryPageDto getOtherDiaryList(Pageable pageable) {
+        Page<DiaryDetailVo> diaryDetailVo = diaryService.getDiaryDetail(pageable);
+
+        List<DiaryDetailDto> diaryDetailDtoList = diaryDetailVo.stream().map(
+            diaryDetail -> {
+                List<String> diaryImageUrls = diaryImageService.getDiaryImagesByDiaryId(diaryDetail.getDiaryId()).stream().map(DiaryImage::getImagePath).collect(Collectors.toList());
+                Long diaryLikeCount = diaryLikeService.getDiaryLikeCountByDiaryId(diaryDetail.getDiaryId());
+
+                List<DiaryCommentDetailDto> diaryCommentDetailDtoList = diaryCommentService.getDiaryCommentWithLikeCountByDiaryId(diaryDetail.getDiaryId()).stream().map(it ->
+                    DiaryCommentDetailDto.builder()
+                        .commentBy("익명")
+                        .commentByImage("")
+                        .comment(it.getComment())
+                        .commentId(it.getCommentId())
+                        .commentLikeCount(diaryCommentLikeService.getDiaryCommentLikeCountByDiaryCommentId(it.getCommentId()))
+                        .build()
+                ).collect(Collectors.toList());
+
+                return DiaryDetailDto.builder()
+                    .diaryId(diaryDetail.getDiaryId())
+                    .userDisplayName("익명")
+                    .userProfileImage("")
+                    .title(diaryDetail.getTitle())
+                    .content(diaryDetail.getContent())
+                    .likeCount(diaryLikeCount)
+                    .commentCount(diaryCommentDetailDtoList.size())
+                    .hashTags(List.of(diaryDetail.getHashTag().split(",")))
+                    .emotion(diaryDetail.getEmotion())
+                    .createdAt(diaryDetail.getCreatedAt().getTime())
                     .isPublic(diaryDetail.getIsPublic())
                     .isAvailableComment(diaryDetail.getIsAvailableComment())
                     .imageUrls(diaryImageUrls)
@@ -181,7 +230,7 @@ public class DiaryCombineService {
                 .emotionEnum(EmotionEnum.valueOf(addDiaryDto.getEmotion()))
                 .isPublic(addDiaryDto.isPublic())
                 .isAvailableComment(addDiaryDto.isAvailableComment())
-                .createdAt(LocalDate.now())
+                .createdAt(new Date())
             .build());
     }
 }
