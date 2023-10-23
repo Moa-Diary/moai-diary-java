@@ -3,8 +3,12 @@ package com.project.moaidiary.entity.diary;
 import com.project.moaidiary.service.diary.vo.DiaryDetailVo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.project.moaidiary.entity.diary.QDiary.diary;
@@ -45,5 +49,28 @@ public class DiaryRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                 .from(diary)
                 .where(diary.diaryId.eq(diaryId))
                 .fetchFirst());
+    }
+
+    @Override
+    public Page<DiaryDetailVo> findAllDiaryDetailByUserId(Long userId, Pageable pageable) {
+            List<DiaryDetailVo> content = queryFactory.select(
+                    Projections.fields(
+                        DiaryDetailVo.class,
+                        diary.diaryId,
+                        diary.title,
+                        diary.content,
+                        diary.hashTag,
+                        diary.emotionEnum,
+                        diary.createdAt,
+                        diary.isPublic,
+                        diary.isAvailableComment
+                    ))
+                .from(diary)
+                .where(diary.user.userId.eq(userId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+            return new PageImpl<>(content, pageable, content.size());
     }
 }

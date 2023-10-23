@@ -12,12 +12,16 @@ import com.project.moaidiary.service.diary.comment.like.DiaryCommentLikeService;
 import com.project.moaidiary.service.diary.comment.dto.DiaryCommentDto;
 import com.project.moaidiary.service.diary.dto.DiaryCountDto;
 import com.project.moaidiary.service.diary.dto.DiaryDetailDto;
+import com.project.moaidiary.service.diary.dto.DiaryPageDto;
 import com.project.moaidiary.service.diary.dto.ModifyDiaryDto;
 import com.project.moaidiary.service.diary.image.DiaryImageService;
 import com.project.moaidiary.service.diary.like.DiaryLikeService;
 import com.project.moaidiary.service.diary.vo.DiaryDetailVo;
 import com.project.moaidiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -115,6 +119,51 @@ public class DiaryCombineService {
             .isAvailableComment(diaryDetailVo.getIsAvailableComment())
             .imageUrls(diaryImageUrls)
             .comment(diaryCommentDetailDtoList)
+            .build();
+    }
+
+    public DiaryPageDto getDiaryList(Long userId, Pageable pageable) {
+        Page<DiaryDetailVo> diaryDetailVo = diaryService.getDiaryDetailByUserId(userId, pageable);
+
+        List<DiaryDetailDto> diaryDetailDtoList = diaryDetailVo.stream().map(
+            diaryDetail -> {
+                List<String> diaryImageUrls = diaryImageService.getDiaryImagesByDiaryId(diaryDetail.getDiaryId()).stream().map(DiaryImage::getImagePath).collect(Collectors.toList());
+                Long diaryLikeCount = diaryLikeService.getDiaryLikeCountByDiaryId(diaryDetail.getDiaryId());
+
+                List<DiaryCommentDetailDto> diaryCommentDetailDtoList = diaryCommentService.getDiaryCommentWithLikeCountByDiaryId(diaryDetail.getDiaryId()).stream().map(it ->
+                    DiaryCommentDetailDto.builder()
+                        .commentBy(it.getCommentBy())
+                        .commentByImage("")
+                        .comment(it.getComment())
+                        .commentId(it.getCommentId())
+                        .commentLikeCount(diaryCommentLikeService.getDiaryCommentLikeCountByDiaryCommentId(it.getCommentId()))
+                        .build()
+                ).collect(Collectors.toList());
+
+                return DiaryDetailDto.builder()
+                    .diaryId(diaryDetail.getDiaryId())
+                    .title(diaryDetail.getTitle())
+                    .content(diaryDetail.getContent())
+                    .likeCount(diaryLikeCount)
+                    .commentCount(diaryCommentDetailDtoList.size())
+                    .hashTags(List.of(diaryDetail.getHashTag().split(",")))
+                    .emotion(diaryDetail.getEmotion())
+                    .createdAt(diaryDetail.getCreatedAt())
+                    .isPublic(diaryDetail.getIsPublic())
+                    .isAvailableComment(diaryDetail.getIsAvailableComment())
+                    .imageUrls(diaryImageUrls)
+                    .comment(diaryCommentDetailDtoList)
+                    .build();
+            }
+        ).collect(Collectors.toList());
+
+        return DiaryPageDto.builder()
+            .content(diaryDetailDtoList)
+            .totalPages(diaryDetailVo.getTotalPages())
+            .totalElements(diaryDetailVo.getTotalElements())
+            .size(diaryDetailVo.getSize())
+            .page(diaryDetailVo.getNumber())
+            .hasMoreResult(diaryDetailVo.hasPrevious())
             .build();
     }
 }

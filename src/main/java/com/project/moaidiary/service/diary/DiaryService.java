@@ -7,8 +7,11 @@ import com.project.moaidiary.service.diary.dto.DiaryDetailDto;
 import com.project.moaidiary.service.diary.vo.DiaryDetailVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.project.moaidiary.exception.CustomErrorCode.NOT_EXIST_DIARY;
@@ -50,5 +53,9 @@ public class DiaryService {
 
     public DiaryDetailVo getDiaryDetailByDiaryId(Long diaryId){
         return diaryRepository.findDiaryDetailByDiaryId(diaryId).orElseThrow(() -> new CustomException(NOT_EXIST_DIARY_COMMENT));
+    }
+
+    public Page<DiaryDetailVo> getDiaryDetailByUserId(Long userId, Pageable pageable) {
+        return diaryRepository.findAllDiaryDetailByUserId(userId, pageable);
     }
 }
