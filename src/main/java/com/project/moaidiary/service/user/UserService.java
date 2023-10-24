@@ -7,6 +7,8 @@ import com.project.moaidiary.service.user.dto.CreateUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.project.moaidiary.exception.CustomErrorCode.NOT_EXIST_USER;
 
 @Service
@@ -36,5 +38,9 @@ public class UserService {
 
     public void deleteUser(User user) {
         userRepository.delete(user);
+    }
+
+    public List<User> getAllUser() {
+        return userRepository.findAll();
     }
 }

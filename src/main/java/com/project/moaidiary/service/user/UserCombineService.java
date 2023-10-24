@@ -6,6 +6,8 @@ import com.project.moaidiary.service.user.dto.UserInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserCombineService {
@@ -24,5 +26,10 @@ public class UserCombineService {
     public void deleteUser(String userEmail) {
         User user = userService.getUserByUserEmail(userEmail);
         userService.deleteUser(user);
+    }
+
+    public List<UserInfoDto> getAllUserInfo() {
+        List<User> userList = userService.getAllUser();
+        return UserInfoDto.from(userList);
     }
 }

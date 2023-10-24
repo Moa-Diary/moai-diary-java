@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -45,5 +47,10 @@ public class UserController {
     @GetMapping("/check/email/{userEmail}")
     public Boolean checkExistUserEmail(@PathVariable String userEmail){
         return userService.isExistUserEmail(userEmail);
+    }
+
+    @GetMapping("/internal-api/all")
+    public List<UserInfoDto> getAllUserInfo() {
+        return userCombineService.getAllUserInfo();
     }
 }

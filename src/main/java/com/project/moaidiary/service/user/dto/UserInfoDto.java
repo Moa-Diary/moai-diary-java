@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -18,6 +21,10 @@ public class UserInfoDto {
     private String userEmail;
     private String userPhone;
     private ImageProfile imageProfileName;
+
+    public static List<UserInfoDto> from(List<User> userList) {
+        return userList.stream().map(UserInfoDto::from).collect(Collectors.toList());
+    }
 
     public static UserInfoDto from(User user){
         return UserInfoDto.builder()
